@@ -36,8 +36,14 @@ public class TestClojureCompilerMojo extends AbstractClojureCompilerMojo {
   protected Boolean temporaryTestOutputDirectory;
 
   public void execute() throws MojoExecutionException {
+
+    if (!aotCompile) {
+      getLog().info("Skipping test sources compilation due to aotCompile=false");
+      return;
+    }
+
     if (skip) {
-      getLog().info("Test compilation is skipped");
+      getLog().info("Test compilation is skipped due to maven.test.skip");
     } else {
       File outputPath = (temporaryTestOutputDirectory) ? createTemporaryDirectory("test-classes") : testOutputDirectory;
 

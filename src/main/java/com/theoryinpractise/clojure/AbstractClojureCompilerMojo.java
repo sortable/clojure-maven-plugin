@@ -205,6 +205,12 @@ public abstract class AbstractClojureCompilerMojo extends AbstractMojo {
   private String windowsConsole;
 
   /**
+   * Determine whether to do compile any Clojure sources (main or test).
+   */
+  @Parameter(required = true, defaultValue = "true")
+  protected boolean aotCompile;
+
+  /**
    * Escapes the given file path so that it's safe for inclusion in a
    * Clojure string literal.
    *

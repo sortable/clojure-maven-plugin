@@ -30,13 +30,13 @@ public class ClojureCompilerMojo extends AbstractClojureCompilerMojo {
   protected Boolean temporaryOutputDirectory;
 
   public void execute() throws MojoExecutionException {
-
-    File outputPath = (temporaryOutputDirectory) ? createTemporaryDirectory("classes") : outputDirectory;
-
-    getLog().debug("Compiling clojure sources to " + outputPath.getPath());
-
-    callClojureWith(getSourceDirectories(SourceDirectory.COMPILE), outputPath, classpathElements, "clojure.lang.Compile", discoverNamespaces());
-
+    if (!aotCompile) {
+      getLog().info("Skipping main sources compilation due to aotCompile=false");
+    } else {
+      File outputPath = (temporaryOutputDirectory) ? createTemporaryDirectory("classes") : outputDirectory;
+      getLog().debug("Compiling clojure sources to " + outputPath.getPath());
+      callClojureWith(getSourceDirectories(SourceDirectory.COMPILE), outputPath, classpathElements, "clojure.lang.Compile", discoverNamespaces());
+    }
     copyNamespaceSourceFilesToOutput(outputDirectory, discoverNamespacesToCopy());
   }
 }
